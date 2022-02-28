@@ -3,10 +3,21 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const mode = process.env.NODE_ENV || 'development';
+const isProd = process.env.NODE_ENV === 'production';
+const isDev = process.env.NODE_ENV || 'development';
+
+function setDevTool() {
+  if (isDev) return 'inline-source-map';
+  if (isProd) return 'source-map';
+  return 'eval-source-map';
+}
 
 module.exports = {
-  mode,
+  mode: isDev,
+  devtool: setDevTool(),
+  experiments: {
+    topLevelAwait: true,
+  },
   resolve: {
     extensions: ['.js', '.jsx'],
   },
